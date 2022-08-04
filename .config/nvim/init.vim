@@ -1,3 +1,3 @@
 :set expandtab
 :set shiftwidth=4
-:set number
+:set number relativenumber
