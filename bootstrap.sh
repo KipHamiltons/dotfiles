@@ -1,12 +1,13 @@
 #!/bin/sh
 
-set -euo pipefail
+set -exuo pipefail
 
-cp -R $(dirname $0)/. $HOME/
+cp -R $(ls -a $(dirname $0) | grep -vE '(^\.git$)|(^\.$)|(^\.\.$)') $HOME/
 
 if [[ "$(uname)" =~ "Darwin" ]]; then
+    mkdir -p "$HOME/.vim/undodir"
     # Needed this one time. Not sure why.
-    sudo chown kiphamiltons "$HOME/.vim/undodir"
+    sudo chown $(whoami) "$HOME/.vim/undodir"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     brew update && brew upgrade
     PKG_INSTALL_CMD="brew install"
@@ -32,8 +33,6 @@ PKG_LIST="\
 "
 
 ${PKG_INSTALL_CMD} ${PKG_LIST}
-
-mkdir -p "$HOME/.vim/undodir"
 
 PACKER_PATH="$HOME/.local/share/nvim/site/pack/packer/start/packer.nvim"
 
